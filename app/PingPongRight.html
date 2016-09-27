@@ -1,0 +1,117 @@
+<html>
+<head>
+<script src="https://d3js.org/d3.v3.min.js"></script>
+<script>
+   var connection = new WebSocket('ws://172.31.99.80:8001');
+   var currentScore = 0;
+   d3.select("#score").transition().delay(220).text(currentScore);
+   var lastRequest = new Date((new Date()).getTime() -1000);
+
+   connection.onmessage = function (event) {
+   if(lastRequest.getTime() + 1000 < new Date()) {
+           lastRequest = new Date();
+
+	   document.getElementById('result0').value=event.data;
+	   //document.getElementById("pongWav").play();
+	   if(event.data === "TWOINCRE") {
+	     currentScore++;
+	     d3.select("#score").transition().delay(220).text(currentScore);
+	   } else if(event.data === "TWODECRE") {
+	     currentScore--;
+	     d3.select("#score").transition().delay(220).text(currentScore);
+	   } else if(event.data === "RESETTTT") {
+	     currentScore = 0;
+	     d3.select("#score").transition().delay(220).text(currentScore);
+	   }
+
+	   d3.select("#pingPongBall").transition().delay(500).duration(250).attr("transform", "translate(100,240)");
+	   d3.select("#pingPongBall").transition().delay(720).duration(250).attr("transform", "translate(400,160)");
+	   d3.select("#pingPongBall").transition().delay(1000).duration(250).attr("transform", "translate(100,240)");
+	   d3.select("#pingPongBall").transition().delay(1500).duration(250).attr("transform", "translate(-200,160)");
+	   //d3.select("#pingPongBall").transition().delay(720).duration(250).attr("transform", "translate(150, 160)");
+	   //d3.select("#pingPongBall").transition().delay(1000).duration(250).attr("transform", "translate(400,240)");
+	   //d3.select("#pingPongBall").transition().delay(1220).duration(250).attr("transform", "translate(800,160)");
+	   //d3.select("#pingPongBall").transition().delay(1500).duration(250).attr("transform", "translate(400, 240)");
+	   //d3.select("#pingPongBall").transition().delay(1720).duration(250).attr("transform", "translate(150, 160)");
+	   //d3.select("#pingPongBall").transition().delay(2000).duration(250).attr("transform", "translate(400, 240)");
+	   //d3.select("#pingPongBall").transition().delay(2220).duration(250).attr("transform", "translate(800, 160)");
+	   //d3.select("#pingPongBall").transition().delay(2500).duration(250).attr("transform", "translate(400, 240)");
+	   //d3.select("#pingPongBall").transition().delay(2720).duration(250).attr("transform", "translate(150, 160)");
+	   //d3.select("#pingPongBall").transition().delay(3000).duration(250).attr("transform", "translate(400, 240)");
+	   //d3.select("#pingPongBall").transition().delay(3220).duration(250).attr("transform", "translate(800, 160)");
+	   //d3.select("#pingPongBall").transition().delay(3500).duration(250).attr("transform", "translate(400, 240)");
+	   //d3.select("#pingPongBall").transition().delay(3720).duration(250).attr("transform", "translate(150, 160)");
+	   //d3.select("#pingPongBall").transition().delay(4000).duration(250).attr("transform", "translate(400, 240)");
+	   //d3.select("#pingPongBall").transition().delay(4220).duration(250).attr("transform", "translate(800, 160)");
+	   //d3.select("#pingPongBall").transition().delay(4500).duration(250).attr("transform", "translate(400, 240)");
+	   //d3.select("#pingPongBall").transition().delay(4720).duration(250).attr("transform", "translate(150, 160)");
+	   //d3.select("#pingPongBall").transition().delay(4500).duration(500).attr("transform", "translate(150, 160)");
+	   //d3.select("#pingPongBall").transition().delay(5000).duration(500).attr("transform", "translate(800, 160)");
+   	   //d3.select("#pingPongBall").transition().delay(5500).duration(500).attr("transform", "translate(150, 160)");
+  }
+};
+</script>
+</head>
+
+<body>
+	<script>
+		var svgWidth = 1270;
+
+		var svgHeight = 600;
+
+		var svgContainer = d3.select("body").append("svg")
+			.attr("width", svgWidth)
+			.attr("height", svgHeight);
+
+		var wholeSvgRect = svgContainer.append("rect")
+			.attr("x", 0)
+			.attr("y", 0)
+			.attr("width", svgWidth)
+			.attr("height", svgHeight)
+			.attr("id", "wholeSvgRect")
+			.style("fill", "beige");
+
+		var pingPongGroup = svgContainer.append("g").attr("id", "pingPongGroup");
+
+		var buildAndAppendCircle = function(addToElement, cx, cy, radius, id, fillColor, opacity) {
+			return addToElement.append("circle")
+				.attr("cx", cx)
+				.attr("cy", cy)
+				.attr("r", radius)
+				.attr("id", id)
+				.style("fill", fillColor)
+				.style("opacity", opacity);
+		}
+		//var pingPongBall = buildAndAppendCircle(pingPongGroup, 150, 160, 7, "pingPongBall", "#00cccc", 1);
+		var pingPongBall = buildAndAppendCircle(pingPongGroup, 150, 160, 7, "pingPongBall", "beige", 1);
+		d3.select("#pingPongBall").transition().duration(100).attr("transform", "translate(-200, 160)");
+
+		var table = pingPongGroup.append("rect")
+			.attr("x", 0)
+			.attr("y", 400)
+			.attr("width", 400)
+			.attr("height", 10)
+			.attr("id", "table")
+			.style("fill", "green");
+
+		var score = pingPongGroup.append("text").text("0")
+			.attr("x", 100)
+			.attr("y", 250)
+			.attr("font-family", "sans-serif")
+			.attr("font-size", "300px")
+			.attr("id", "score")
+			.style("fill", "green");
+
+	</script>
+	<p>
+	Result: <output type=text id="result0" value="" readonly> </output>
+	</p>
+
+	<input type=text
+	onchange="connection.send(this.value); ">
+	<audio hidden id="pongWav" controls>
+		<source src="pingpong.wav" type="audio/wav"> Your browser does not support the audio element.
+	</audio>
+</body>
+
+</html>
