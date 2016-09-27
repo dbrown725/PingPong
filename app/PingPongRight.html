@@ -2,7 +2,7 @@
 <head>
 <script src="https://d3js.org/d3.v3.min.js"></script>
 <script>
-   var connection = new WebSocket('ws://172.31.99.80:8001');
+   var connection = new WebSocket('ws://localhost:8001');
    var currentScore = 0;
    d3.select("#score").transition().delay(220).text(currentScore);
    var lastRequest = new Date((new Date()).getTime() -1000);

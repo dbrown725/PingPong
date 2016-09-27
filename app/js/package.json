@@ -1,0 +1,14 @@
+{
+    "name": "ping-pong",
+    "preferGlobal": true,
+    "version": "0.0.1",
+    "description": "a simple web socket web server that reads serial data",
+    "license": "MIT",
+    "engines": {
+        "node": ">=0.10"
+    },
+    "dependencies": {
+        "serialport": "~4.0.1",
+        "nodejs-websocket": "~1.7.0"
+    }
+}
