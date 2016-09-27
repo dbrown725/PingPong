@@ -12,7 +12,6 @@
            lastRequest = new Date();
 
 	   document.getElementById('result0').value=event.data;
-	   //document.getElementById("pongWav").play();
 	   if(event.data === "TWOINCRE") {
 	     currentScore++;
 	     d3.select("#score").transition().delay(220).text(currentScore);
@@ -109,9 +108,6 @@
 
 	<input type=text
 	onchange="connection.send(this.value); ">
-	<audio hidden id="pongWav" controls>
-		<source src="pingpong.wav" type="audio/wav"> Your browser does not support the audio element.
-	</audio>
 </body>
 
 </html>
